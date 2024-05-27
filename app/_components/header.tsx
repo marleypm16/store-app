@@ -9,6 +9,7 @@ const Header = () => {
             <Button variant='secondary'>
                 <MenuIcon/>
             </Button>
+
             <Image src='/images/logo.png' width={60} height={60} alt='logo'/>
             <Button variant='secondary'>
                 <ShoppingCartIcon/>
