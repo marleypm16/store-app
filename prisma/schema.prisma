@@ -34,12 +34,12 @@ model Product {
   name               String
   slug               String
   description        String
-  price              Decimal
+  basePrice          Decimal        @db.Decimal(8, 2)
   imageUrls          String[]
   category           Category       @relation(fields: [categoryId], references: [id])
   categoryId         String
   orderProduct       orderProduct[]
-  discountPorcentage Int
+  discountPercentage Int            @default(0)
 }
 
 model Order {
@@ -64,6 +64,6 @@ model orderProduct {
   order              Order   @relation(fields: [orderId], references: [id])
   orderId            String
   quantity           Int
-  price              Decimal
-  discountPorcentage Int
+  basePrice          Decimal @db.Decimal(8, 2)
+  discountPercentage Int     @default(0)
 }
