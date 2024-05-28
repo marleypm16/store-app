@@ -27,14 +27,14 @@ const ProductItem = ({product}:ProductItemProps) => {
                         className="rounded-lg p-7 object-cover shadow-md"
                     />
 
-                    {product.discountPercentage && (
+                    {product.discountPercentage ? (
                         <Badge className="absolute left-2 top-2 flex items-center bg-primary gap-[2px] rounded-full px-2 py-[2px] text-white">
                             <ArrowDownIcon size={12} />
                             <span className="text-xs font-semibold">
                             {product.discountPercentage}%
                             </span>
                         </Badge>
-                    )}
+                    ) : null}
                 </CardContent>
             </Card>
             <div>
