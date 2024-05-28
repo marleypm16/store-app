@@ -17,7 +17,7 @@ const ProductItem = ({product}:ProductItemProps) => {
             href={`/products/${product.id}`}
             className='w-[150px] min-w-[150px]'
         >
-            <Card className="w-full space-y-2 bg-secondary">
+            <Card className="w-full mb-3 space-y-2 bg-secondary">
                 <CardContent className="relative aspect-square w-full">
                     <Image
                         src={product.imageUrls[0]}
