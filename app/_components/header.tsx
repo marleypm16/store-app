@@ -6,12 +6,12 @@ import Image from "next/image";
 const Header = () => {
     return (
         <div className='p-5 border-b flex justify-between items-center'>
-            <Button variant='secondary'>
+            <Button variant='outline'>
                 <MenuIcon/>
             </Button>
 
             <Image src='/images/logo.png' width={60} height={60} alt='logo'/>
-            <Button variant='secondary'>
+            <Button variant='outline'>
                 <ShoppingCartIcon/>
             </Button>
         </div>
