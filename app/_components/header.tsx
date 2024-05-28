@@ -1,19 +1,57 @@
 import React from 'react';
 import {Button} from "@/app/_components/ui/button";
-import {MenuIcon, ShoppingCartIcon} from "lucide-react";
+import {BookTextIcon, HomeIcon, MenuIcon, ShoppingCartIcon} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "@/app/_components/ui/sheet";
 
 const Header = () => {
     return (
         <div className='p-5 border-b flex justify-between items-center'>
-            <Button variant='outline'>
-                <MenuIcon/>
-            </Button>
+            <Sheet>
+                <SheetTrigger>
+                    <Button variant='outline'>
+                        <MenuIcon/>
+                    </Button></SheetTrigger>
+                <SheetContent side='left'>
+                    <SheetHeader>
+                        <SheetTitle>Menu</SheetTitle>
+                        <SheetDescription>
+                            <div className="flex flex-col gap-3 px-5">
+                                <Button variant="outline" className="justify-start" asChild>
+                                    <Link href="/">
+                                        <HomeIcon size={18} className="mr-2"/>
+                                        Início
+                                    </Link>
+                                </Button>
+                                <Button variant="outline" className="justify-start" asChild>
+                                    <Link href="/orders">
+                                        <BookTextIcon size={18} className="mr-2"/>
+                                        Pedidos
+                                    </Link>
+                                </Button>
+                            </div>
+                        </SheetDescription>
+                    </SheetHeader>
+                </SheetContent>
+            </Sheet>
+            <Link href='/'><Image src='/images/logo.png' width={60} height={60} alt='logo'/></Link>
+            <Sheet>
+                <SheetTrigger>
+                    <Button variant='outline'>
+                        <ShoppingCartIcon/>
+                    </Button></SheetTrigger>
+                <SheetContent>
+                    <SheetHeader>
+                        <SheetTitle>Are you absolutely sure?</SheetTitle>
+                        <SheetDescription>
+                            This action cannot be undone. This will permanently delete your account
+                            and remove your data from our servers.
+                        </SheetDescription>
+                    </SheetHeader>
+                </SheetContent>
+            </Sheet>
 
-            <Image src='/images/logo.png' width={60} height={60} alt='logo'/>
-            <Button variant='outline'>
-                <ShoppingCartIcon/>
-            </Button>
         </div>
     );
 };
