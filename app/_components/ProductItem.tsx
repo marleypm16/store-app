@@ -14,7 +14,7 @@ const ProductItem = ({product}:ProductItemProps) => {
     const basePrice : number = Number(product.basePrice)
     return (
         <Link
-            href={`/products/${product.id}`}
+            href={`/product/${product.id}`}
             className='w-[150px] min-w-[150px]'
         >
             <Card className="w-full mb-3 space-y-2 bg-secondary">
