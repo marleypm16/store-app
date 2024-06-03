@@ -4,6 +4,7 @@ import {BookTextIcon, HomeIcon, MenuIcon, ShoppingCartIcon} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "@/app/_components/ui/sheet";
+import Cart from "@/app/_components/cart";
 
 const Header = () => {
     return (
@@ -25,7 +26,7 @@ const Header = () => {
                                     </Link>
                                 </Button>
                                 <Button variant="outline" className="justify-start" asChild>
-                                    <Link href="/orders">
+                                    <Link href={`/orders`}>
                                         <BookTextIcon size={18} className="mr-2"/>
                                         Pedidos
                                     </Link>
@@ -41,14 +42,8 @@ const Header = () => {
                     <Button variant='outline'>
                         <ShoppingCartIcon/>
                     </Button></SheetTrigger>
-                <SheetContent>
-                    <SheetHeader>
-                        <SheetTitle>Are you absolutely sure?</SheetTitle>
-                        <SheetDescription>
-                            This action cannot be undone. This will permanently delete your account
-                            and remove your data from our servers.
-                        </SheetDescription>
-                    </SheetHeader>
+                <SheetContent className="w-[320px]">
+                   <Cart/>
                 </SheetContent>
             </Sheet>
 
