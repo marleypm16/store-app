@@ -4,7 +4,6 @@ import {notFound} from "next/navigation";
 import Header from "@/app/_components/header";
 import ProductDetails from "@/app/product/[id]/_components/productDetails";
 import ProductList from "@/app/_components/ProductList";
-import CartButton from "@/app/product/[id]/_components/cartButton";
 import ProductImages from "@/app/product/[id]/_components/ProductImages";
 interface ProductPageProps {
     params: {
@@ -29,14 +28,12 @@ const ProductPage = async ({params}:ProductPageProps) => {
                     <ProductImages product={product}/>
                 <div className='mt-4'>
                     <ProductDetails product={product}/>
-                    <CartButton/>
                 </div>
                 <div className='mt-4'>
                     <h2 className='mb-4 '>Produtos que você também pode gostar</h2>
                     <ProductList products={products}/>
                 </div>
             </div>
-
         </>
     );
 };
