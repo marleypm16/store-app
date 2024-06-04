@@ -1,4 +1,3 @@
-import {CartProduct} from "@/app/_context/cartContext";
 import {format} from "date-fns";
 
 export const formatPrice = (basePrice: number): string => {
