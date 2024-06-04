@@ -1,5 +1,5 @@
 "use client";
-import React, {createContext, ReactNode, useContext, useState} from 'react';
+import React, {createContext, ReactNode, useContext, useMemo, useState} from 'react';
 import { Product} from "@prisma/client";
 import {Format} from "@/app/_lib/format";
 
@@ -10,13 +10,15 @@ export interface CartProduct extends Product {
 
 export interface CartContextProps {
     cart: CartProduct[];
-    quantity: number;
     addToCart: (item: CartProduct) => void;
-    handleIncrement: () => void;
-    handleDecrement: () => void;
+    handleIncrement: (productId:string) => void;
+    handleDecrement: (productId:string) => void;
     calculateTotalPrice: (desconto: Pick<Product, "discountPercentage">, basePrice: number, quantity: number) => number;
     removeFromCart: (id: string) => void;
     clearCart: () => void;
+    subTotal: number;
+    total: number;
+    totaldescount: number;
 }
 
 
@@ -25,11 +27,23 @@ export const CartContext = createContext<CartContextProps|undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [cart, setCart] = useState<CartProduct[]>([]);
-    const [quantity, setQuantity] = useState<number>(1);
 
-    const addToCart =  (item: CartProduct) => {
+    const addToCart = useMemo(() => (item: CartProduct) => {
+        if (cart.some((cartItem) => cartItem.id === item.id)) {
+            setCart((prevCart) => prevCart.map((cartItem) => {
+                if (cartItem.id === item.id) {
+                    return {
+                        ...cartItem,
+                        quantity: cartItem.quantity + item.quantity,
+                    };
+                }
+                return cartItem;
+            }));
+            return;
+        }
         setCart((prevCart) => [...prevCart, item]);
-    };
+    }, [cart]);
+
     const removeFromCart = (id: string) => {
         setCart((prevCart) => prevCart.filter((item) => item.id !== id));
     }
@@ -42,18 +56,43 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         }
         return basePrice * quantity;
     }
-    const handleIncrement = () => {
-        setQuantity(quantity + 1);
+    const handleIncrement = (productId:string) => {
+        setCart((prevCart) => prevCart.map((item) => {
+            if (item.id === productId) {
+                return {
+                    ...item,
+                    quantity: item.quantity + 1,
+                };
+            }
+            return item;
+
+        }))
     }
-    const handleDecrement = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1);
+    const handleDecrement = (productId:string) => {
+       setCart((prevCart) => prevCart.map((item) => {
+            if (item.id === productId) {
+                return {
+                    ...item,
+                    quantity: item.quantity - 1,
+                };
+            }
+            return item;
+       }))
+    }
+    const subTotal = useMemo(() => {
+            return cart.reduce((acc, item) => acc + Number(item.basePrice) * item.quantity, 0)
         }
-    }
+    , [cart]);
+    const total = useMemo(() => {
+        return cart.reduce((acc, product) => {
+            return acc + Format.calculateDiscount(Number(product.basePrice), product.discountPercentage) * product.quantity ;
+        }, 0);
+    }, [cart]);
+    const totaldescount = subTotal - total;
 
 
     return (
-        <CartContext.Provider value={{clearCart,removeFromCart,cart,addToCart,handleDecrement,handleIncrement,quantity,calculateTotalPrice}}>
+        <CartContext.Provider value={{totaldescount,subTotal,total,clearCart,removeFromCart,cart,addToCart,handleDecrement,handleIncrement,calculateTotalPrice}}>
             {children}
         </CartContext.Provider>
     );
