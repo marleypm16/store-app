@@ -1,7 +1,6 @@
 "use client";
 import { useCart } from '@/app/_context/cartContext';
 import React, {useState} from 'react';
-import {Format} from "@/app/_lib/format";
 import {Button} from "@/app/_components/ui/button";
 import {OrderStatus} from "@prisma/client";
 import {createOrder} from "@/app/_lib/createOrder";
@@ -11,10 +10,24 @@ import {ScrollArea} from "@/app/_components/ui/scroll-area";
 import {Separator} from "@/app/_components/ui/separator";
 import CartItem from "@/app/_components/cartItem";
 import {toast} from "sonner";
+import {signIn, useSession} from "next-auth/react";
+import {calculateTotalPrice, calculateTotalQuantity} from "@/app/_lib/calculate";
+import {formatPrice} from "@/app/_lib/format";
 const Cart = () => {
+    const {data} = useSession()
     const [isLoading, setIsLoading] = useState(false);
     const {cart,clearCart,subTotal,total,totaldescount} = useCart();
     const handleCreateOrder = async () => {
+        if (!data?.user) {
+            toast.error('Você precisa estar logado para finalizar a compra',{
+                duration: 2200,
+                action:{
+                    label: 'Login',
+                    onClick: () => signIn()
+                }
+            })
+            return
+        }
         setIsLoading(true)
         try {// Cria a ordem no banco de dados usando Prisma
             await createOrder({
@@ -28,8 +41,13 @@ const Cart = () => {
                         }))
                     },
                 },
-                totalPrice: Format.calculateTotalPrice(cart),
-                totalQuantity: Format.calculateTotalQuantity(cart),
+                User:{
+                    connect:{
+                        id: data?.user.id
+                    }
+                },
+                totalPrice: calculateTotalPrice(cart),
+                totalQuantity: calculateTotalQuantity(cart),
             })
             clearCart()
         } catch (error) {
@@ -74,13 +92,13 @@ const Cart = () => {
                     <div className="flex flex-col gap-3">
                         <div className="flex items-center justify-between text-xs lg:text-sm">
                             <p>SubTotal</p>
-                            <p>{Format.formatPrice(subTotal)}</p>
+                            <p>{formatPrice(subTotal)}</p>
                         </div>
                         <Separator/>
 
                         <div className="flex items-center justify-between text-xs lg:text-sm">
                             <p>Descontos</p>
-                            <p>{Format.formatPrice(totaldescount)}</p>
+                            <p>{formatPrice(totaldescount)}</p>
                         </div>
                         <Separator/>
                         <div className="flex items-center justify-between text-xs lg:text-sm">
@@ -92,7 +110,7 @@ const Cart = () => {
 
                         <div className="flex items-center justify-between text-sm font-bold lg:text-base">
                             <p>Total</p>
-                            <p>{Format.formatPrice(total)}</p>
+                            <p>{formatPrice(total)}</p>
                         </div>
 
 
