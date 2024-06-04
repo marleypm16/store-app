@@ -5,11 +5,18 @@ import Image from "next/image";
 import {ArrowLeftIcon, ArrowRightIcon, TrashIcon} from "lucide-react";
 import {Button} from "@/app/_components/ui/button";
 import {Format} from "@/app/_lib/format";
+import { toast } from 'sonner';
 interface CartItemProps {
     product: CartProduct;
 }
 const CartItem = ({product}:CartItemProps) => {
-    const {removeFromCart,handleIncrement,handleDecrement,quantity} = useCart();
+    const {removeFromCart,handleIncrement,handleDecrement} = useCart();
+    const handleRemoveFromCart = () => {
+        removeFromCart(product.id);
+        toast.success("Item removido do carrinho",{
+            duration: 900
+        })
+    }
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -32,7 +39,7 @@ const CartItem = ({product}:CartItemProps) => {
 
                     <div className="flex items-center gap-2">
                         <p className="text-sm font-bold lg:text-base">
-                            {Format.formatPrice(product.totalPrice)}
+                            {Format.formatPrice(Format.calculateDiscount((Number(product.basePrice)), product.discountPercentage))}
                         </p>
                         {product.discountPercentage > 0 && (
                             <p className="text-xs line-through opacity-75 lg:text-sm">
@@ -46,18 +53,18 @@ const CartItem = ({product}:CartItemProps) => {
                             size="icon"
                             variant="outline"
                             className="h-8 w-8 lg:h-9 lg:w-9"
-                            onClick={handleDecrement}
+                            onClick={()=>handleDecrement(product.id)}
                         >
                             <ArrowLeftIcon className="h-4 w-4 lg:h-5 lg:w-5"/>
                         </Button>
 
-                        <span className="text-xs lg:text-sm">{quantity}</span>
+                        <span className="text-xs lg:text-sm">{product.quantity}</span>
 
                         <Button
                             size="icon"
                             variant="outline"
                             className="h-8 w-8 lg:h-9 lg:w-9"
-                            onClick={handleIncrement}
+                            onClick={()=>handleIncrement(product.id)}
                         >
                             <ArrowRightIcon className="h-4 w-4 lg:h-5 lg:w-5"/>
                         </Button>
@@ -67,7 +74,7 @@ const CartItem = ({product}:CartItemProps) => {
             <Button
                 size="icon"
                 variant="outline"
-                onClick={() =>removeFromCart(product.id)}
+                onClick={handleRemoveFromCart}
                 className="h-8 w-8 lg:h-9 lg:w-9"
             >
                 <TrashIcon className="h-4 w-4 lg:h-5 lg:w-5"/>
