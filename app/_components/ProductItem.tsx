@@ -5,7 +5,8 @@ import {ArrowDownIcon} from "lucide-react";
 import Link from "next/link";
 import {Card, CardContent} from "@/app/_components/ui/card";
 import {Badge} from "@/app/_components/ui/badge";
-import { Format } from "@/app/_lib/format";
+import { formatPrice } from "@/app/_lib/format";
+import {calculateDiscount} from "@/app/_lib/calculate";
 interface ProductItemProps {
     product : Product
 
@@ -41,11 +42,11 @@ const ProductItem = ({product}:ProductItemProps) => {
                 <h4 className="text-sm font-semibold">{product.name}</h4>
                     {product.discountPercentage ? (
                         <div className='flex items-center gap-3'>
-                            <p className="text-sm ">{Format.formatPrice(Format.calculateDiscount(basePrice,product.discountPercentage))}</p>
-                            <span className='text-sm line-through text-gray-500'>{Format.formatPrice(basePrice)}</span>
+                            <p className="text-sm ">{formatPrice(calculateDiscount(basePrice,product.discountPercentage))}</p>
+                            <span className='text-sm line-through text-gray-500'>{formatPrice(basePrice)}</span>
                         </div>
                     ) : <p><p
-                        className="text-sm ">{Format.formatPrice(basePrice)}</p>
+                        className="text-sm ">{formatPrice(basePrice)}</p>
                     </p>
                     }
             </div>

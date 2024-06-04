@@ -1,7 +1,7 @@
 "use client";
 import React, {createContext, ReactNode, useContext, useMemo, useState} from 'react';
 import { Product} from "@prisma/client";
-import {Format} from "@/app/_lib/format";
+import {calculateDiscount} from "@/app/_lib/calculate";
 
 export interface CartProduct extends Product {
     quantity: number;
@@ -52,7 +52,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
     const calculateTotalPrice = ( desconto: Pick<Product, "discountPercentage">,basePrice: number, quantity: number) => {
         if (desconto.discountPercentage > 0) {
-            return Format.calculateDiscount(basePrice, desconto.discountPercentage) * quantity;
+            return calculateDiscount(basePrice, desconto.discountPercentage) * quantity;
         }
         return basePrice * quantity;
     }
@@ -85,7 +85,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     , [cart]);
     const total = useMemo(() => {
         return cart.reduce((acc, product) => {
-            return acc + Format.calculateDiscount(Number(product.basePrice), product.discountPercentage) * product.quantity ;
+            return acc + calculateDiscount(Number(product.basePrice), product.discountPercentage) * product.quantity ;
         }, 0);
     }, [cart]);
     const totaldescount = subTotal - total;

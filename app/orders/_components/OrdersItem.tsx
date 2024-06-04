@@ -2,11 +2,10 @@
 import React, {useEffect} from 'react';
 import {Prisma} from "@prisma/client";
 import {Card, CardContent} from "@/app/_components/ui/card";
-import {Format} from "@/app/_lib/format";
+import {formatDate, formatPrice} from "@/app/_lib/format";
 import Link from "next/link";
 import {updateOrderStatus} from "@/app/_lib/updateOrderStatus";
 import {Separator} from "@/app/_components/ui/separator";
-import {format} from "date-fns";
 interface OrdersListProps {
     order : Prisma.OrderGetPayload<{
         include:{
@@ -43,7 +42,7 @@ const OrdersItem = ({order}:OrdersListProps) => {
                     <div className="flex items-center justify-between pt-3">
                         <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold">
-                            Data : {format(new Date(order.createdAt), 'dd/MM/yyyy')}
+                            Data : {formatDate(new Date(order.createdAt))}
                         </span>
                         </div>
 
@@ -55,7 +54,7 @@ const OrdersItem = ({order}:OrdersListProps) => {
 
 
                     <div className="flex items-center justify-between">
-                        <p className="text-sm">Total: {Format.formatPrice(Number(order.totalPrice))}</p>
+                        <p className="text-sm">Total: {formatPrice(Number(order.totalPrice))}</p>
                     </div>
                 </CardContent>
             </Card>

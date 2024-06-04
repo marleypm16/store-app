@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import React, {useMemo} from 'react';
 import {Card, CardContent} from "@/app/_components/ui/card";
 import {Separator} from "@/app/_components/ui/separator";
-import {Format} from "@/app/_lib/format";
+import {formatPrice} from "@/app/_lib/format";
 import Image from "next/image";
 import {Button} from "@/app/_components/ui/button";
 import Link from "next/link";
@@ -52,7 +52,7 @@ const OrderDetails = ({order} : OrderDetailsProps) => {
                                     Quantidade : {orderProduct.quantity}
                                     </span>
                                         <span className="text-sm font-semibold">
-                                    {Format.formatPrice(Number(orderProduct.basePrice))}
+                                    {formatPrice(Number(orderProduct.basePrice))}
                                 </span>
                                     </div>
 
@@ -72,13 +72,13 @@ const OrderDetails = ({order} : OrderDetailsProps) => {
                         <div className="flex flex-col gap-3">
                             <div className="flex items-center justify-between text-xs lg:text-sm">
                                 <p>SubTotal</p>
-                                <p>{Format.formatPrice(subTotal)}</p>
+                                <p>{formatPrice(subTotal)}</p>
                             </div>
                             <Separator/>
 
                             <div className="flex items-center justify-between text-xs lg:text-sm">
                                 <p>Descontos</p>
-                                <p>{Format.formatPrice(totaldescount)}</p>
+                                <p>{formatPrice(totaldescount)}</p>
                             </div>
                             <Separator/>
                             <div className="flex items-center justify-between text-xs lg:text-sm">
@@ -90,7 +90,7 @@ const OrderDetails = ({order} : OrderDetailsProps) => {
 
                             <div className="flex items-center justify-between text-sm font-bold lg:text-base">
                                 <p>Total</p>
-                                <p>{Format.formatPrice(total)}</p>
+                                <p>{formatPrice(total)}</p>
                             </div>
                         </div>
                     </CardContent>
