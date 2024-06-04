@@ -28,13 +28,8 @@ const OrderPage = async ({params} : OrderPageProps) => {
     return (
         <div>
             <Header />
-
             <div className="px-5 py-6">
-                <h2 className="pb-6 text-lg font-semibold">Pedido : #{order.id}</h2>
-
-                <div className="space-y-4  ">
-                    <OrderDetails order={order} />
-                </div>
+                <OrderDetails order={order} />
             </div>
         </div>
     );
