@@ -36,7 +36,7 @@ const OrdersItem = ({order}:OrdersListProps) => {
                         className={`w-fit rounded-full bg-[#EEEEEE] px-2 py-1 text-muted-foreground mt-3 ${order.status !== "WAITING_FOR_PAYMENT" && "bg-green-500 text-white"}`}
                     >
                       <span className="block text-xs font-semibold">
-                          Pagamento: {order.status}
+                          Pagamento: {order.status === "WAITING_FOR_PAYMENT" ? "Aguardando pagamento" : 'Pagamento aceito'}
                       </span>
                     </div>
 
