@@ -13,7 +13,7 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/app/_components/ui/avatar";
 
 const Header = () => {
     const {data} = useSession();
-    const handleSignIn= () => signIn("github");
+    const handleSignIn= () => signIn("google");
     const handleSignOut = () => signOut();
     return (
         <div className='p-5 border-b flex justify-between items-center'>
@@ -50,7 +50,7 @@ const Header = () => {
                             <>
                             <div className="flex items-center justify-between pt-10">
                                     <h2 className="font-semibold">Olá. Faça seu login!</h2>
-                                    <Button size="icon" onClick={handleSignIn}>
+                                    <Button size="icon" variant='outline' onClick={handleSignIn}>
                                         <LogInIcon />
                                     </Button>
                                 </div>
