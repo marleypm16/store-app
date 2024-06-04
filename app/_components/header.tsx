@@ -1,10 +1,11 @@
 import React from 'react';
 import {Button} from "@/app/_components/ui/button";
-import {BookTextIcon, HomeIcon, MenuIcon, ShoppingCartIcon} from "lucide-react";
+import {BookTextIcon, HomeIcon, MenuIcon} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "@/app/_components/ui/sheet";
 import Cart from "@/app/_components/cart";
+import CartIconButton from "@/app/_components/CartIconButton";
 
 const Header = () => {
     return (
@@ -39,9 +40,8 @@ const Header = () => {
             <Link href='/'><Image src='/images/logo.png' width={60} height={60} alt='logo'/></Link>
             <Sheet>
                 <SheetTrigger>
-                    <Button variant='outline'>
-                        <ShoppingCartIcon/>
-                    </Button></SheetTrigger>
+                    <CartIconButton/>
+                </SheetTrigger>
                 <SheetContent className="w-[320px]">
                    <Cart/>
                 </SheetContent>
