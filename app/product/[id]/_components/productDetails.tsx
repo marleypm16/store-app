@@ -30,7 +30,7 @@ const ProductDetails = ({product} : ProductDetailsProps) => {
     const handleAddToCart = () => {
         addToCart(cartProduct);
         toast.success("Item adicionado ao carrinho", {
-            duration: 1000
+            duration: 800
         })
         setQuantity(1);
     }

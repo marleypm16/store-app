@@ -32,11 +32,12 @@ const Cart = () => {
                 totalQuantity: Format.calculateTotalQuantity(cart),
             })
             clearCart()
-            console.log('Order created successfully:', cart);
         } catch (error) {
             console.error('Error creating order:', error);
         }finally {
-            toast.success('Pedido criado com sucesso')
+            toast.success('Pedido criado com sucesso',{
+                duration: 900
+            })
             setIsLoading(false)
 
         }
