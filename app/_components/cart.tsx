@@ -1,21 +1,24 @@
 "use client";
 import { useCart } from '@/app/_context/cartContext';
-import React from 'react';
+import React, {useState} from 'react';
 import {Format} from "@/app/_lib/format";
 import {Button} from "@/app/_components/ui/button";
 import {OrderStatus} from "@prisma/client";
 import {createOrder} from "@/app/_lib/createOrder";
-import {ShoppingCartIcon} from "lucide-react";
+import {Loader2, ShoppingCartIcon} from "lucide-react";
 import {Badge} from "@/app/_components/ui/badge";
 import {ScrollArea} from "@/app/_components/ui/scroll-area";
 import {Separator} from "@/app/_components/ui/separator";
 import CartItem from "@/app/_components/cartItem";
+import {toast} from "sonner";
 const Cart = () => {
-    const {cart,clearCart} = useCart();
+    const [isLoading, setIsLoading] = useState(false);
+    const {cart,clearCart,subTotal,total,totaldescount} = useCart();
     const handleCreateOrder = async () => {
+        setIsLoading(true)
         try {// Cria a ordem no banco de dados usando Prisma
             await createOrder({
-                status: OrderStatus.PAYMENT_ACCEPTED,
+                status: OrderStatus.WAITING_FOR_PAYMENT,
                 orderProduct:{
                     createMany:{
                         data: cart.map((item) => ({
@@ -32,6 +35,10 @@ const Cart = () => {
             console.log('Order created successfully:', cart);
         } catch (error) {
             console.error('Error creating order:', error);
+        }finally {
+            toast.success('Pedido criado com sucesso')
+            setIsLoading(false)
+
         }
     }
     return (
@@ -64,24 +71,29 @@ const Cart = () => {
 
                 {cart.length > 0 && (
                     <div className="flex flex-col gap-3">
-                        <Separator />
+                        <div className="flex items-center justify-between text-xs lg:text-sm">
+                            <p>SubTotal</p>
+                            <p>{Format.formatPrice(subTotal)}</p>
+                        </div>
+                        <Separator/>
 
                         <div className="flex items-center justify-between text-xs lg:text-sm">
-                            <p>Subtotal</p>
+                            <p>Descontos</p>
+                            <p>{Format.formatPrice(totaldescount)}</p>
                         </div>
-
-                        <Separator />
-
+                        <Separator/>
                         <div className="flex items-center justify-between text-xs lg:text-sm">
                             <p>Entrega</p>
                             <p>GRÁTIS</p>
                         </div>
 
-                        <Separator />
+                        <Separator/>
 
                         <div className="flex items-center justify-between text-sm font-bold lg:text-base">
                             <p>Total</p>
+                            <p>{Format.formatPrice(total)}</p>
                         </div>
+
 
                         <Button
                             className="mt-7 font-bold uppercase"
@@ -89,6 +101,8 @@ const Cart = () => {
                         >
                             Finalizar compra
                         </Button>
+                        {isLoading && <Loader2 size={50} className="mr-2 text-center h-4 w-4 animate-spin" />}
+
                     </div>
                 )}
             </div>
