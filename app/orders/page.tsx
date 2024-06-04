@@ -8,18 +8,29 @@ const OrdersPage = async () => {
     const orders = await db.order.findMany(
         {
             include:{
-                orderProduct: true
+                orderProduct: {
+                    include:{
+                        product: true
+                    }
+
+                }
             }
         }
     );
 
     return (
         <>
-            <Header/>
-            <h2 className='text-center p-5'>Pedidos</h2>
-            {orders.map(order => (
-                <OrdersItem key={order.id} order={order}></OrdersItem>
-            ))}
+            <Header />
+
+            <div className="px-5 py-6">
+                <h2 className="pb-6 text-lg font-semibold">Meus Pedidos</h2>
+
+                <div className="space-y-4  ">
+                    {orders.map((order) => (
+                        <OrdersItem key={order.id} order={order} />
+                    ))}
+                </div>
+            </div>
         </>
     );
 };
