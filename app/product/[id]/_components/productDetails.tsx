@@ -8,8 +8,6 @@ import {Button} from "@/app/_components/ui/button";
 import {Toaster} from "@/app/_components/ui/sonner";
 import {CartProduct, useCart} from "@/app/_context/cartContext";
 import {toast} from "sonner";
-import {calculateDiscount} from "@/app/_lib/calculate";
-
 interface ProductDetailsProps {
     product : Product;
 }
@@ -31,44 +29,82 @@ const ProductDetails = ({product} : ProductDetailsProps) => {
     const handleAddToCart = () => {
         addToCart(cartProduct);
         toast.success("Item adicionado ao carrinho", {
-            duration: 800
+            duration: 1500
         })
         setQuantity(1);
     }
     return (
         <>
-            <div className='mb-4 relative'>
-                <div className='flex justify-between items-center'>
-                    <div className=''>
-                        <h2>{product.name}</h2>
-                        {product.discountPercentage > 0 && (
-                            <div className='mt-2'>
-                                <div className='flex items-center gap-4'>
-                                    <p className="text-sm ">{formatPrice(calculateDiscount(basePrice, product.discountPercentage))}</p>
-                                    <Badge className="bg-primary text-white">{product.discountPercentage}%</Badge>
-                                </div>
+            <div className="flex flex-col px-5 lg:w-[40%] lg:rounded-lg lg:bg-accent lg:p-10">
+                <h2 className="text-lg lg:text-2xl">{product.name}</h2>
 
-                                <span
-                                    className='text-sm line-through text-gray-500'>De {formatPrice(basePrice)}</span>
+                <div className="flex items-center gap-2">
+                    <h1 className="text-xl font-bold lg:text-3xl">
+                         {formatPrice(totalPrice)}
+                    </h1>
+                    {product.discountPercentage > 0 && (
+                        <Badge className="lg:text-base">
+                            {product.discountPercentage}% OFF
+                        </Badge>
+                    )}
+                </div>
+
+                {product.discountPercentage > 0 && (
+                    <p className="text-sm line-through opacity-75 lg:text-base">
+                         {formatPrice(basePrice)}
+                    </p>
+                )}
+
+                <div className="mt-4 flex items-center gap-2">
+                    <Button
+                        size="icon"
+                        variant="outline"
+                        onClick={handleDecrementProductQuantity}
+                    >
+                        <ArrowLeftIcon size={16}/>
+                    </Button>
+
+                    <span>{quantity}</span>
+
+                    <Button
+                        size="icon"
+                        variant="outline"
+                        onClick={handleIncrementProductQuantity}
+                    >
+                        <ArrowRightIcon size={16}/>
+                    </Button>
+                </div>
+
+                <div className="mt-8 flex flex-col gap-3">
+                    <h3 className="font-bold">Descrição</h3>
+                    <p className="text-justify text-sm opacity-60">{product.description}</p>
+                </div>
+
+                <div className="mt-8 flex flex-col gap-5">
+
+                    <Button className="font-bold uppercase" onClick={handleAddToCart}>
+                        Adicionar ao carrinho
+                    </Button>
+
+                    <div className="flex items-center justify-between rounded-lg bg-accent px-5 py-2 lg:bg-[#2A2A2A]">
+                        <div className="flex items-center gap-2">
+                            <TruckIcon/>
+
+                            <div className="flex flex-col">
+                                <p className="text-xs">
+                                    Entrega via <span className="font-bold">Correios®</span>
+                                </p>
+                                <p className="text-xs text-[#8162FF]">
+                                    Envio para <span className="font-bold">todo Brasil</span>
+                                </p>
                             </div>
-                        )}
-                        {!product.discountPercentage && (
-                            <p className="text-sm ">{formatPrice(basePrice)}</p>
-                        )}
-                    </div>
-                    <div>
-                        <div className='flex items-center gap-5'>
-                            <Button onClick={handleDecrementProductQuantity} size='icon'><ArrowLeftIcon/></Button>
-                            <span>{quantity}</span>
-                            <Button size='icon' onClick={handleIncrementProductQuantity}><ArrowRightIcon/></Button>
                         </div>
+
+                        <p className="text-xs font-bold">Frete grátis</p>
                     </div>
                 </div>
-                <span className='text-sm flex items-center gap-2 '><TruckIcon/>Entrega Grátis</span>
             </div>
-            <Button onClick={handleAddToCart}>Adicionar ao Carrinho</Button>
-            <Toaster  position='top-center'/>
-
+        <Toaster position='top-center'/>
         </>
 
     );

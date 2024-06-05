@@ -1,107 +1,135 @@
 "use client";
 import React from 'react';
 import {Button} from "@/app/_components/ui/button";
-import {BookTextIcon, HomeIcon, LogInIcon, LogOutIcon, MenuIcon} from "lucide-react";
-import Image from "next/image";
+import {
+
+    HomeIcon,
+    LogInIcon,
+    LogOutIcon,
+    MenuIcon, PackageSearchIcon,
+
+} from "lucide-react";
 import Link from "next/link";
-import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "@/app/_components/ui/sheet";
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetHeader,
+    SheetTrigger
+} from "@/app/_components/ui/sheet";
 import Cart from "@/app/_components/cart";
 import CartIconButton from "@/app/_components/CartIconButton";
 import {signIn,signOut,useSession} from "next-auth/react";
 import {Separator} from "@/app/_components/ui/separator";
 import {Avatar, AvatarFallback, AvatarImage} from "@/app/_components/ui/avatar";
+import { Card } from './ui/card';
 
 const Header = () => {
-    const {data} = useSession();
+    const {data,status} = useSession();
     const handleSignIn= () => signIn("google");
     const handleSignOut = () => signOut();
     return (
-        <div className='p-5 border-b flex justify-between items-center'>
+        <Card className="flex items-center justify-between p-[1.875rem]">
             <Sheet>
-                <SheetTrigger>
-                    <Button variant='outline'>
-                        <MenuIcon/>
-                    </Button></SheetTrigger>
-                <SheetContent side='left'>
-                    <SheetHeader>
-                        <SheetTitle>Menu</SheetTitle>
-                        {data?.user ? (
-                            <>
-                                <div className="flex justify-between pt-6">
-                                    <div className="flex items-center gap-3">
+                <SheetTrigger asChild>
+                    <Button size="icon" variant="outline">
+                        <MenuIcon />
+                    </Button>
+                </SheetTrigger>
 
+                <SheetContent side="left" className="w-[21.875rem]">
+                    <SheetHeader className="text-left text-lg font-semibold">
+                        Menu
+                    </SheetHeader>
 
-                                        <div className='flex items-center gap-4 '>
-                                            <Avatar>
-                                                <AvatarImage src={data?.user?.image as string | undefined} />
-                                                <AvatarFallback>{data?.user?.name}</AvatarFallback>
-                                            </Avatar>
-                                            <div>
-                                                <h3 className="font-semibold">{data?.user?.name}</h3>
-                                                <span className="block text-xs text-muted-foreground">
-                                                    {data?.user?.email}
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </div>
+                    {status === "authenticated" && data?.user && (
+                        <div className="flex flex-col">
+                            <div className="flex items-center gap-2 py-4">
+                                <Avatar>
+                                    <AvatarFallback>
+                                        {data.user.name?.[0].toUpperCase()}
+                                    </AvatarFallback>
+
+                                    {data.user.image && <AvatarImage src={data.user.image} />}
+                                </Avatar>
+
+                                <div className="flex flex-col">
+                                    <p className="font-medium">{data.user.name}</p>
+                                    <p className="text-sm opacity-75">Boas compras!</p>
                                 </div>
-                            </>
-                        ) : (
-                            <>
-                            <div className="flex items-center justify-between pt-10">
-                                    <h2 className="font-semibold">Olá. Faça seu login!</h2>
-                                    <Button size="icon" variant='outline' onClick={handleSignIn}>
-                                        <LogInIcon />
-                                    </Button>
-                                </div>
-                            </>
-                        )}
+                            </div>
 
-                        <div className="py-6">
                             <Separator />
                         </div>
-                        <SheetDescription>
-                            <div className="flex flex-col gap-3 px-5">
-                                <Button variant="outline" className="justify-start" asChild>
-                                    <Link href="/">
-                                        <HomeIcon size={18} className="mr-2"/>
-                                        Início
-                                    </Link>
-                                </Button>
-                                {data?.user && (
-                                    <Button variant="outline" className="justify-start" asChild>
-                                        <Link href={`/orders`}>
-                                            <BookTextIcon size={18} className="mr-2"/>
-                                            Pedidos
-                                        </Link>
-                                    </Button>
-                                )}
-                            </div>
-                            {data?.user && (
+                    )}
+
+                    <div className="mt-4 flex flex-col gap-2">
+                        {status === "unauthenticated" && (
+                            <Button
+                                onClick={handleSignIn}
+                                variant="outline"
+                                className="w-full justify-start gap-2"
+                            >
+                                <LogInIcon size={16} />
+                                Fazer Login
+                            </Button>
+                        )}
+
+                        {status === "authenticated" && (
+                            <Button
+                                onClick={handleSignOut}
+                                variant="outline"
+                                className="w-full justify-start gap-2"
+                            >
+                                <LogOutIcon size={16} />
+                                Fazer Logout
+                            </Button>
+                        )}
+
+                        <SheetClose asChild>
+                            <Link href="/">
                                 <Button
                                     variant="outline"
-                                    className="w-full justify-start space-x-3  text-sm font-norma mt-4"
-                                    onClick={handleSignOut}
+                                    className="w-full justify-start gap-2"
                                 >
-                                    <LogOutIcon size={16} />
-                                    <span className="block">Sair da conta</span>
+                                    <HomeIcon size={16} />
+                                    Início
                                 </Button>
-                            )}
-                        </SheetDescription>
-                    </SheetHeader>
-                </SheetContent>
-            </Sheet>
-            <Link href='/'><Image src='/images/logo.png' width={60} height={60} alt='logo'/></Link>
-            <Sheet>
-                <SheetTrigger>
-                    <CartIconButton/>
-                </SheetTrigger>
-                <SheetContent className="w-[320px]">
-                   <Cart/>
+                            </Link>
+                        </SheetClose>
+
+                        <SheetClose asChild>
+                            <Link href={`/orders`}>
+                                <Button
+                                    variant="outline"
+                                    className="w-full justify-start gap-2"
+                                >
+                                    <PackageSearchIcon size={16} />
+                                    Meus Pedidos
+                                </Button>
+                            </Link>
+                        </SheetClose>
+
+                    </div>
                 </SheetContent>
             </Sheet>
 
-        </div>
+            <Link href="/">
+                <h1 className="text-lg font-semibold">
+                    <span className="text-primary">App</span> Store
+                </h1>
+            </Link>
+
+            <Sheet>
+                <SheetTrigger >
+                    <CartIconButton />
+                </SheetTrigger>
+
+                <SheetContent className="w-[350px] lg:w-[600px] lg:max-w-[600px]">
+                    <Cart />
+                </SheetContent>
+            </Sheet>
+        </Card>
     );
 };
 

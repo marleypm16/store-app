@@ -42,14 +42,19 @@ export default async function  Home()  {
               <ProductList products={products}/>
           </div>
           <ImageBanner image={'02'} alt={'Mouses com até 55% de desconto'}/>
-          <div className='p-5'>
-              <h2 className='mb-4'>Mouses</h2>
-              <ProductList products={mouses}/>
+          <div className='p-5 md:flex flex-col  items-center'>
+              <div>
+                    <h2 className='mb-4'>Mouses</h2>
+                    <ProductList products={mouses}/>
+              </div>
           </div>
           <ImageBanner image={'03'} alt={'Fones com até 20% de desconto'}/>
-          <div className='p-5'>
-              <h2 className='mb-4'>Fones de Ouvido</h2>
-              <ProductList products={speakers}/>
+          <div className='p-5 md:flex flex-col items-center'>
+              <div>
+                  <h2 className='mb-4'>Fones de Ouvido</h2>
+                  <ProductList products={speakers}/>
+              </div>
+
           </div>
       </>
 

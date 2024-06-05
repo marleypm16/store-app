@@ -7,7 +7,7 @@ interface ProductListProps {
 }
 const ProductList = ({products}:ProductListProps) => {
     return (
-            <div className="flex w-full gap-6 overflow-x-auto">
+            <div className="flex w-full  gap-6 overflow-x-auto sm:justify-start md:justify-center">
                 {products.map((product) => (
                     <ProductItem
                         key={product.id}
