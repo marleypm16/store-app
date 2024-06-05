@@ -7,8 +7,7 @@ import {formatPrice} from "@/app/_lib/format";
 import Image from "next/image";
 import {Button} from "@/app/_components/ui/button";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
-import {ChevronLeftIcon} from "lucide-react";
+import GoBackButton from "@/app/_components/goBackButton";
 interface OrderDetailsProps {
     order: Prisma.OrderGetPayload<{
         include:{
@@ -22,7 +21,6 @@ interface OrderDetailsProps {
     }>
 }
 const OrderDetails = ({order} : OrderDetailsProps) => {
-    const router = useRouter();
 
     const subTotal = useMemo(() => {
             return order.orderProduct.reduce((acc, item) => acc + Number(item.product.basePrice) * item.quantity, 0)
@@ -33,7 +31,7 @@ const OrderDetails = ({order} : OrderDetailsProps) => {
 
     return (
         <>
-            <Button onClick={() => router.back()} variant='outline'><ChevronLeftIcon/> Voltar</Button>
+            <GoBackButton/>
             <h2 className="pb-6 text-lg mt-3 font-semibold">Pedido : #{order.id}</h2>
             <div className='space-y-4'>
                 <h2>Produtos</h2>
