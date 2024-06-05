@@ -6,6 +6,7 @@ import OrdersItem from "@/app/orders/_components/OrdersItem";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/app/_lib/auth";
 import { redirect } from "next/navigation";
+import GoBackButton from "@/app/_components/goBackButton";
 
 const OrdersPage = async () => {
     const session = await getServerSession(authOptions)
@@ -31,7 +32,7 @@ const OrdersPage = async () => {
     return (
         <>
             <Header />
-
+            <GoBackButton/>
             <div className="px-5 py-6">
                 <h2 className="pb-6 text-lg font-semibold">Meus Pedidos</h2>
                 <div className="space-y-4  ">
