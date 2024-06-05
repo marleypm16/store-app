@@ -95,7 +95,7 @@ const ProductDetails = ({product} : ProductDetailsProps) => {
                                     Entrega via <span className="font-bold">Correios®</span>
                                 </p>
                                 <p className="text-xs text-[#8162FF]">
-                                    Envio para <span className="font-bold">todo Brasil</span>
+                                    Envio para <span className="font-bold"> Brasil</span>
                                 </p>
                             </div>
                         </div>
